@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <ListPreference android:title="Tolerance"
+            android:summary="Select the cued-recall tolerance"
+            android:key="tolerance"
+            android:defaultValue="75"
+            android:entries="@array/listArrayTolerance"
+            android:entryValues="@array/listValuesTolerance" />
+
+
+
+        <ListPreference android:title="Points"
+            android:summary="Select the number of points for the cued-recall password"
+            android:key="numPoints"
+            android:defaultValue="3"
+            android:entries="@array/listArrayPoints"
+            android:entryValues="@array/listValuesPoints" />
+
+</PreferenceScreen>
