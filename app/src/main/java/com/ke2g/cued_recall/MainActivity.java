@@ -38,6 +38,11 @@ public class MainActivity extends ActionBarActivity {
             startActivity(i);
         }
 
+        if (id == R.id.action_statistics) {
+            Intent i = new Intent(this, StatisticsActivity.class);
+            startActivity(i);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

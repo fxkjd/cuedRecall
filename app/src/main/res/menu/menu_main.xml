@@ -4,4 +4,6 @@
     tools:context="com.ke2g.cued_recall.MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_statistics" android:title="@string/action_statistics"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

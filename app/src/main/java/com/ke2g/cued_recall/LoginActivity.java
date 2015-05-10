@@ -68,8 +68,25 @@ public class LoginActivity extends ActionBarActivity {
         if(json.equals("")){
             return null;
         } else {
-            ArrayList<Point> points = gson.fromJson(json, new TypeToken<ArrayList<Point>>(){}.getType());
-            return points;
+            User u = gson.fromJson(json, User.class);
+            return u.getPoints();
+        }
+    }
+
+    private void setTry(String username, int total, int invalid) {
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this.getApplicationContext());
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = appSharedPrefs.getString(username, "");
+
+        if(!json.equals("")){
+            User u = gson.fromJson(json, User.class);
+            u.setInvalidLogins(invalid);
+            u.setTotalLogins(total);
+            json = gson.toJson(u);
+            prefsEditor.putString(username, json);
+            prefsEditor.commit();
         }
     }
 
@@ -91,10 +108,14 @@ public class LoginActivity extends ActionBarActivity {
 
             //check if points are the saved ones
             if(CuedRecallIntent.arePointsEqual(points, getUserPoints(getUsername()), getTolerance())){
+                setTry(getUsername(), 1, 0);
                 Toast.makeText(this, "Correct username and password", Toast.LENGTH_LONG).show();
             } else {
+                setTry(getUsername(), 1, 1);
                 Toast.makeText(this, "Username and password don't match", Toast.LENGTH_LONG).show();
             }
         }
     }
+
+
 }
