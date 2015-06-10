@@ -23,6 +23,7 @@ import java.util.List;
 public class LoginActivity extends ActionBarActivity {
 
     public static final String TAG = LoginActivity.class.getSimpleName();
+    private int discretization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,21 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
+    private String getUserHash(String username){
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this.getApplicationContext());
+        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+        Gson gson = new Gson();
+        String json = appSharedPrefs.getString(username, "");
+
+        if(json.equals("")){
+            return null;
+        } else {
+            User u = gson.fromJson(json, User.class);
+            return u.getHash();
+        }
+    }
+
     private void setTry(String username, int total, int invalid) {
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(this.getApplicationContext());
@@ -107,15 +123,30 @@ public class LoginActivity extends ActionBarActivity {
             ArrayList<Point> points =  data.getParcelableArrayListExtra("RESULT_CLICKS");
 
             //check if points are the saved ones
-            if(CuedRecallIntent.arePointsEqual(points, getUserPoints(getUsername()), getTolerance())){
-                setTry(getUsername(), 1, 0);
-                Toast.makeText(this, "Correct username and password", Toast.LENGTH_LONG).show();
+            if(getDiscretization() == 1){
+                if (CuedRecallIntent.areHashEqual(points, getUserHash(getUsername()), getTolerance())) {
+                    setTry(getUsername(), 1, 0);
+                    Toast.makeText(this, "Correct username and password", Toast.LENGTH_LONG).show();
+                } else {
+                    setTry(getUsername(), 1, 1);
+                    Toast.makeText(this, "Username and password don't match", Toast.LENGTH_LONG).show();
+                }
             } else {
-                setTry(getUsername(), 1, 1);
-                Toast.makeText(this, "Username and password don't match", Toast.LENGTH_LONG).show();
+                if (CuedRecallIntent.arePointsEqual(points, getUserPoints(getUsername()), getTolerance())) {
+                    setTry(getUsername(), 1, 0);
+                    Toast.makeText(this, "Correct username and password", Toast.LENGTH_LONG).show();
+                } else {
+                    setTry(getUsername(), 1, 1);
+                    Toast.makeText(this, "Username and password don't match", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
 
+    public int getDiscretization() {
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        return  Integer.parseInt(SP.getString("discreType", "0"));
+    }
 }

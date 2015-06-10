@@ -50,11 +50,13 @@ public class StatisticsActivity extends ListActivity {
         Map<String, ?> keys = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).getAll();
 
         for (Map.Entry<String, ?> entry : keys.entrySet()) {
-            //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-            String json = entry.getValue().toString();
-            Gson gson = new Gson();
-            User u = gson.fromJson(json, User.class);
-            users.add(u);
+            Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+            if(!entry.getKey().equals("tolerance") && !entry.getKey().equals("numPoints") && !entry.getKey().equals("discreType") ) {
+                String json = entry.getValue().toString();
+                Gson gson = new Gson();
+                User u = gson.fromJson(json, User.class);
+                users.add(u);
+            }
         }
 
         return users;

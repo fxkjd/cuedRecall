@@ -29,4 +29,13 @@
         <item>100</item>
         <item>150</item>
     </string-array>
+
+    <string-array name="listDiscretization">
+        <item>Centered (none)</item>
+        <item>Grid</item>
+    </string-array>
+    <string-array name="listValuesDiscretization">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 </resources>

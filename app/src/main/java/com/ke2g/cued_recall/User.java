@@ -12,11 +12,13 @@ public class User implements Parcelable {
 
     ArrayList<Point> points;
     String username;
+    String hash;
     int invalidLogins;
     int totalLogins;
 
-    public User(ArrayList<Point> points, String username) {
+    public User(ArrayList<Point> points, String hash, String username) {
         this.points = points;
+        this.hash = hash;
         this.username = username;
         this.invalidLogins = 0;
         this.totalLogins = 0;
@@ -30,6 +32,7 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(points);
+        dest.writeString(hash);
         dest.writeString(username);
         dest.writeInt(invalidLogins);
         dest.writeInt(totalLogins);
@@ -38,6 +41,7 @@ public class User implements Parcelable {
     // Parcelling part
     public User(Parcel in){
         in.readTypedList(points, Point.CREATOR);
+        this.hash = in.readString();
         this.username = in.readString();
         this.invalidLogins = in.readInt();
         this.totalLogins = in.readInt();
@@ -57,6 +61,10 @@ public class User implements Parcelable {
 
     public int getTotalLogins() {
         return totalLogins;
+    }
+
+    public String getHash() {
+        return hash;
     }
 
     public void setInvalidLogins(int invalidLogins) {

@@ -60,7 +60,8 @@ public class SignupActivity extends ActionBarActivity {
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(this.getApplicationContext());
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
-        User u = new User(points, username);
+        String hash = CuedRecallIntent.createHash(points);
+        User u = new User(points, hash, username);
         Gson gson = new Gson();
         String json = gson.toJson(u);
         prefsEditor.putString(username, json);

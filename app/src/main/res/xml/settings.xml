@@ -16,4 +16,11 @@
             android:entries="@array/listArrayPoints"
             android:entryValues="@array/listValuesPoints" />
 
+        <ListPreference android:title="Discretization"
+            android:summary="Select discretization"
+            android:key="discreType"
+            android:defaultValue="0"
+            android:entries="@array/listDiscretization"
+            android:entryValues="@array/listValuesDiscretization" />
+
 </PreferenceScreen>
