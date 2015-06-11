@@ -44,16 +44,16 @@ public class CuedRecallIntent {
         return isEqual;
     }
 
-    public static String createHash(ArrayList<Point> points) {
-        String hash = "";
-        String grids = getGrid(points);
+    public static String createHash(ArrayList<Point> points,int tolerance) {
+        String hash;
+        String grids = getGrid(points, tolerance);
         hash = BCrypt.hashpw(grids, BCrypt.gensalt());
         Log.d(TAG, "Grid text " + hash);
 
         return hash;
     }
 
-    private static String getGrid(ArrayList<Point> points) {
+    private static String getGrid(ArrayList<Point> points, int tolerance) {
         String grids = "";
         DecimalFormat df = new DecimalFormat("##");
         df.setRoundingMode(RoundingMode.DOWN);
@@ -62,7 +62,7 @@ public class CuedRecallIntent {
             int x = points.get(i).getX();
             int y = points.get(i).getY();
             Log.d(TAG, "Point " + i + " grid: " + df.format(x / 8) + "" + df.format(y / 8));
-            grids += df.format(x / 8) + "" + df.format(y / 8);
+            grids += df.format(x / tolerance) + "" + df.format(y / tolerance);
         }
 
         Log.d(TAG, "Grid text " + grids);
@@ -70,13 +70,9 @@ public class CuedRecallIntent {
     }
 
     public static boolean areHashEqual(ArrayList<Point> points, String userHash, int tolerance) {
-        String newGrid = getGrid(points);
+        String newGrid = getGrid(points, tolerance);
         Log.d(TAG, "Grid compare: " + newGrid);
-        if (BCrypt.checkpw(newGrid, userHash)){
-            return true;
-        }else{
-            return false;
-        }
+        return BCrypt.checkpw(newGrid, userHash);
     }
 
 
