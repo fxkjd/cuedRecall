@@ -56,11 +56,17 @@ public class SignupActivity extends ActionBarActivity {
         }
     }
 
+    private int getTolerance(){
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        return  Integer.parseInt(SP.getString("tolerance", "75"));
+    }
+
     private void saveUserPoints(String username, ArrayList<Point> points){
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(this.getApplicationContext());
         SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
-        String hash = CuedRecallIntent.createHash(points);
+        String hash = CuedRecallIntent.createHash(points, getTolerance());
         User u = new User(points, hash, username);
         Gson gson = new Gson();
         String json = gson.toJson(u);
@@ -83,6 +89,7 @@ public class SignupActivity extends ActionBarActivity {
             saveUserPoints(getUsername(), points);
             Toast.makeText(this, "Correct sign up", Toast.LENGTH_LONG).show();
             Intent i = new Intent(this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
         }
     }
